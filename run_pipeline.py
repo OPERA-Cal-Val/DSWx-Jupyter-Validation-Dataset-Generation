@@ -43,10 +43,10 @@ def download_planet_img(planet_id: str) -> str:
 
 def classify_planet_img(planet_id):
 
-    out_class_dir = Path(f'classification_outputs/{planet_id}_classification')
+    out_class_dir = Path(f'classification_outputs_peckel/{planet_id}')
     out_class_dir.mkdir(exist_ok=True, parents=True)
 
-    out_notebook_path = out_class_dir / f'Classification_{planet_id}.ipynb'
+    out_notebook_path = out_class_dir / f'{planet_id}.ipynb'
 
     pm.execute_notebook('1_Classification_Multiscale_Superpixels_with_Peckel.ipynb',
                         output_path=out_notebook_path,

@@ -31,4 +31,5 @@ dependencies:
  - flake8-builtins
  - flake8-import-order
  - pip:
+   - python-dotenv
    - dem-stitcher>=2.3.0
