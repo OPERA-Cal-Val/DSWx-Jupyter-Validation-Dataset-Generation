@@ -24,7 +24,7 @@ ES_PASSWORD='<JPL PASSWORD>'
 From this repo:
 
 1. `mamba env update -f environment.yml`
-2. `conda activate dswx_calval`
+2. `conda activate dswx_val`
 
 ## To run
 
