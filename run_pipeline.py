@@ -13,12 +13,8 @@ download_ipynb_dir.mkdir(exist_ok=True)
 
 def get_planet_ids_from_db() -> list:
     bucket_name = 'opera-calval-database-dswx'
-
-    s3 = boto3.resource('s3')
-    img_table_obj = s3.Object(bucket_name, 'image.geojson')
-    image_table_data = img_table_obj.get()['Body']
-    df_planet_images = gpd.read_file(image_table_data)
-
+    table_name = 'image.geojson'
+    df_planet_images = gpd.read_file(f's3://{bucket_name}/{table_name}')
     planet_ids = df_planet_images.image_name.tolist()
     return planet_ids
 
@@ -68,15 +64,14 @@ def upload_data():
 
 
 @click.command()
-@click.option('--download_planet_img', default=False, help='Download Planet Imgs Locally')
 @click.option('--use_local_chips', default=True, help='Classify only local chips or download all onto disk')
-def main(download_planet_img, use_local_chips):
+def main(use_local_chips):
     planet_ids = get_planet_ids_from_db()
     if use_local_chips:
         planet_ids = get_local_planet_ids()
 
     def generate_validation_dataset(planet_id):
-        if download_planet_img:
+        if not use_local_chips:
             download_planet_img(planet_id)
         out_data = classify_planet_img(planet_id)
         return out_data
