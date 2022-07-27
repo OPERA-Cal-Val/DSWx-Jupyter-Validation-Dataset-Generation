@@ -72,7 +72,9 @@ def main(use_local_chips):
 
     def generate_validation_dataset(planet_id):
         if not use_local_chips:
+            print(f'downloading planet image {planet_id}')
             download_planet_img(planet_id)
+        print(f'generating ML dataset {planet_id}')
         out_data = classify_planet_img(planet_id)
         return out_data
 
