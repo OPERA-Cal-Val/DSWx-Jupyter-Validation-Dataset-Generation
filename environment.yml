@@ -20,6 +20,7 @@ dependencies:
  - boto3
  - tqdm
  - pip
+ - planet
  - contextily
  - scikit-image
  - scikit-learn
