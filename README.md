@@ -19,6 +19,16 @@ ES_USERNAME='<JPL USERNAME>'
 ES_PASSWORD='<JPL PASSWORD>'
 ```
 
+To the ~/.aws/credentials file:
+
+```
+[default]
+aws_access_key_id = ''
+aws_secret_access_key = ''
+```
+
+Geopandas expects these fields even if they are not filled in.
+
 ## Install
 
 From this repo:
