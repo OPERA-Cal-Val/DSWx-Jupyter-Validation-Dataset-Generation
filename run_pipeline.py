@@ -37,16 +37,17 @@ def download_planet_img(planet_id: str) -> str:
     return out_notebook_path
 
 
-def classify_planet_img(planet_id):
+def classify_planet_img(planet_id, training_type='peckel'):
 
-    out_class_dir = Path(f'classification_outputs_peckel/{planet_id}')
+    out_class_dir = Path(f'classification_outputs_{training_type}/{planet_id}')
     out_class_dir.mkdir(exist_ok=True, parents=True)
 
     out_notebook_path = out_class_dir / f'{planet_id}.ipynb'
 
-    pm.execute_notebook('1_Classification_Multiscale_Superpixels_with_Peckel.ipynb',
+    pm.execute_notebook('1_Classification_Multiscale_Superpixels_with_Auxiliary_training.ipynb',
                         output_path=out_notebook_path,
-                        parameters={'PLANET_ID': planet_id}
+                        parameters={'PLANET_ID': planet_id,
+                                    'TRAINING_TYPE': training_type}
                         )
     return out_class_dir
 
@@ -65,7 +66,8 @@ def upload_data():
 
 @click.command()
 @click.option('--use_local_chips', default=True, help='Classify only local chips or download all onto disk')
-def main(use_local_chips):
+@click.option('--training_type', default='peckel', help='Either s1_lulc or peckel for generating training data')
+def main(use_local_chips, training_type):
     planet_ids = get_planet_ids_from_db()
     if use_local_chips:
         planet_ids = get_local_planet_ids()
@@ -75,12 +77,12 @@ def main(use_local_chips):
             print(f'downloading planet image {planet_id}')
             download_planet_img(planet_id)
         print(f'generating ML dataset {planet_id}')
-        out_data = classify_planet_img(planet_id)
+        out_data = classify_planet_img(planet_id, training_type)
         return out_data
 
     _ = list(map(generate_validation_dataset, tqdm(planet_ids, desc='Generating Validation Dataset')))
 
-    upload_data()
+    # upload_data()
 
 
 if __name__ == '__main__':
