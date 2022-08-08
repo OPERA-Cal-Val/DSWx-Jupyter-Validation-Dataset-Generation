@@ -30,11 +30,14 @@ aws_secret_access_key = ''
 Geopandas expects these fields even if they are not filled in.
 
 ## Install
+It is recommended to install `mamba` in the user's base environment to speed up the installation process:
+
+`conda install -c conda-forge mamba`
 
 From this repo:
 
-1. `mamba env update -f environment.yml`
-2. `conda activate dswx_val`
+1. `mamba env create -f environment.yml`
+3. `conda activate dswx_val`
 
 ## To run
 
