@@ -65,15 +65,15 @@ def upload_data():
 
 
 @click.command()
-@click.option('--use_local_chips', default=True, help='Classify only local chips or download all onto disk')
+@click.option('--download_chips', default=False, is_flag=True, help='Classify only local chips or download all onto disk')
 @click.option('--training_type', default='peckel', help='Either s1_lulc or peckel for generating training data')
-def main(use_local_chips, training_type):
+def main(download_chips, training_type):
     planet_ids = get_planet_ids_from_db()
-    if use_local_chips:
+    if not download_chips:
         planet_ids = get_local_planet_ids()
 
     def generate_validation_dataset(planet_id):
-        if not use_local_chips:
+        if download_chips:
             print(f'downloading planet image {planet_id}')
             download_planet_img(planet_id)
         print(f'generating ML dataset {planet_id}')
